@@ -1,0 +1,19 @@
+{
+    "button": [
+        {
+            "type": "click",
+            "name": "查看选手",
+            "key":"lists"
+        },
+        {
+            "type": "view",
+            "name": "投票",
+            "url":"www.baidu.com"
+        },
+        {
+            "type": "click",
+            "name":"规则",
+            "key":"rules"
+        }
+    ]
+}

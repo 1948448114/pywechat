@@ -3,6 +3,7 @@
 
 
 from mod import getCon
+from mod.RuleHandler import RuleHandler
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
@@ -19,7 +20,8 @@ class Application(tornado.web.Application):
 
     def __init__(self):
         handlers = [
-            (r'/',WechatHandler)
+            (r'/',WechatHandler),
+            (r'/rules',RuleHandler)
             ]
         settings = dict(
             cookie_secret="7CA71A57B571B5AEAC5E64C6042415DE",
