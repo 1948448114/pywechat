@@ -68,12 +68,12 @@ class WechatHandler(tornado.web.RequestHandler):
                     self.finish()
                 elif self.wx.event == 'CLICK':
                     try:
-                        self.unitsmap[self.wx.event_key]
+                        self.unitsmap[self.wx.event_key]()
                     except KeyError:
                         pass
                     self.finish()
             elif self.wx.msg_type == 'text':
-                self.unitsmap[self.wx.content]
+                self.unitsmap[self.wx.content]()
                 self.finish()
 
             else:
