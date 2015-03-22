@@ -3,16 +3,16 @@
 
 from tornado.httpclient import HTTPRequest, HTTPClient, HTTPError
 
-def rules(self):
+def rules():
     msg = u'rules'
     return msg
 
 
-def lists(self):
+def lists():
     msg = u'lists'
     return msg
 
 
-def vote(self):
+def vote():
     msg = u'<a href="www.baidu.com">欢迎参与投票！'
     return msg
