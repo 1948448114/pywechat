@@ -84,13 +84,13 @@ class WechatHandler(tornado.web.RequestHandler):
             self.finish()
                
     def we_rules(self):
-        msg = get.rules()
+        msg = getCon.rules()
         self.write(self.wx.response_text_msg(msg))
     def we_lists(self):
-        msg = get.lists()
+        msg = getCon.lists()
         self.write(self.wx.response_text_msg(msg))
     def we_vote(self):
-        msg = get.vote()
+        msg = getCon.vote()
         self.write(self.wx.response_text_msg(msg))
     def nothing(self):
         msg = u'无法识别的命令T_T'
