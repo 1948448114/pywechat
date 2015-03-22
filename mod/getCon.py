@@ -14,5 +14,5 @@ def lists():
 
 
 def vote():
-    msg = u'<a href="www.baidu.com">欢迎参与投票！'
+    msg = u'<a href="www.baidu.com">欢迎参与投票！</a>'
     return msg
