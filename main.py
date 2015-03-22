@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 #@date  :2015-3-22
 
+
+from mod import getCon
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
@@ -8,7 +10,7 @@ import tornado.options
 import tornado.gen
 import os
 import check
-from mod import get
+
 
 from tornado.options import define, options
 define('port', default=80, help='run on the given port', type=int)
@@ -33,9 +35,9 @@ class WechatHandler(tornado.web.RequestHandler):
     @property
     def unitsmap(self):
         return {
-            'rules':self.rules,
-            'lists':self.lists,
-            'vote':self.vote,
+            'rules':self.we_rules,
+            'lists':self.we_lists,
+            'vote':self.we_vote,
             'nothing':self.nothing
         }
 
@@ -81,13 +83,13 @@ class WechatHandler(tornado.web.RequestHandler):
             self.write('message processing fail')
             self.finish()
                
-    def rules(self):
+    def we_rules(self):
         msg = get.rules()
         self.write(self.wx.response_text_msg(msg))
-    def lists(self):
+    def we_lists(self):
         msg = get.lists()
         self.write(self.wx.response_text_msg(msg))
-    def vote(self):
+    def we_vote(self):
         msg = get.vote()
         self.write(self.wx.response_text_msg(msg))
     def nothing(self):
