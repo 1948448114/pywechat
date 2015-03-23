@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-LOCAL = u'http://123.57.221.18/'
+LOCAL = u'http://123.57.221.18'
 
 from tornado.httpclient import HTTPRequest, HTTPClient, HTTPError
 
