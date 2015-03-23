@@ -9,7 +9,7 @@ def rules():
 
 
 def lists():
-    msg = u'lists'
+    msg = u'<a href="www.zhihu.com">列表</a>'
     return msg
 
 
