@@ -67,9 +67,13 @@ class Message(object):
             return 'information'
         elif u'毕业生' in content:
             return 'vote'
+        elif u'会议安排' in content:
+            return 'party'
         else:
             return 'nothing'
-
+    @property
+    def openid(self):
+        return self.msg.get('FromUserName', None)
     def response_text_msg(self, content):
         return self.TEXT_MSG.format(to_user_name=self.msg['FromUserName'],
                                     from_user_name=self.msg['ToUserName'],

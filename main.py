@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 #@date  :2015-3-22
 
-from config import LOCAL,ResponseContent
+from config import *
 from sqlalchemy.orm import scoped_session, sessionmaker
 from mod.register import registerHandler
+from mod.Tregister import TregisterHandler
+from mod.update import UpdateHandler
 from mod.db import engine
+from sqlalchemy.orm.exc import NoResultFound
 from mod.user import User
+from mod.teacher import Teacher
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
@@ -25,7 +29,9 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r'/',WechatHandler),
-             (r'/register/([\S]+)',registerHandler)
+            (r'/Tregister/([\S]+)',TregisterHandler),
+            (r'/update/([\S]+)',UpdateHandler),
+            (r'/register/([\S]+)',registerHandler)
             ]
         settings = dict(
             cookie_secret="7CA71A57B571B5AEAC5E64C6042415DE",
@@ -52,8 +58,11 @@ class WechatHandler(tornado.web.RequestHandler):
             'result':self.we_result,
             'nothing':self.nothing,
             'information':self.information,
+            'party':self.party_arrangement,
             'ask':self.ask
         }
+    def on_finish(self):
+        self.db.close()
 
     def get(self):
         self.wx = check.Message(token='SeuSoft')
@@ -78,7 +87,7 @@ class WechatHandler(tornado.web.RequestHandler):
                     self.write(self.wx.response_text_msg(ResponseContent))
                     self.finish()
                 elif self.wx.event == 'unsubscribe':
-                    self.write(self.wx.response_text_msg('谢谢您的关注'))
+                    self.write(self.wx.response_text_msg(u'谢谢您的关注'))
                     self.finish()
                 elif self.wx.event == 'CLICK':
                     try:
@@ -112,6 +121,14 @@ class WechatHandler(tornado.web.RequestHandler):
     def information(self):
         msg = ResponseContent
         self.write(self.wx.response_text_msg(msg))
+    def party_arrangement(self):
+        try:
+            teacher = self.db.query(Teacher).filter(Teacher.openid == self.wx.openid).one()
+            msg = u'尊敬的%s，您好！会议将在xxx举行，时间为xxx，地点为xxx' % teacher.name
+            self.write(self.wx.response_text_msg(msg))
+        except NoResultFound:
+            msg = u'<a href="%s/Tregister/%s">您尚未进行登录注册，点我进行注册登录哦</a>' % (URL, self.wx.openid)
+            self.write(self.wx.response_text_msg(msg))
     def ask(self):
         msg = u'感谢您的提问！工作人员会及时回答您的提问，请耐心等待'
         self.write(self.wx.response_text_msg(msg))

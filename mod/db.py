@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from config import DB_URL
 DB_HOST = DB_URL
-DB_USER = ''
-DB_PWD = ''
+DB_USER = 'LJ'
+DB_PWD = '084358'
 DB_NAME = 'wechat'
+
 
 from sqlalchemy import create_engine
 

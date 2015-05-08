@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="{{ static_url('css/jquery.mobile-1.4.2.css') }}">
+        <script type="text/javascript" src="{{ static_url('js/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ static_url('js/jquery.mobile-1.4.2.min.js') }}"></script> 
+        <title>绑定账号</title>
+    </head>
+
+    <body>
+        <div data-role="page" id="main">
+            <div data-role="header">
+                <h1>报道登录</h1>
+            </div>
+            <div data-role="content" class="main_content" >
+                <div data-role="fieldcontain">
+                    <!-- <div data-role="controlgroup" > -->
+                    <label for="number">姓名：</label>
+                    <input type="text" name="number" id="number" placeholder="姓名" value="">
+                    <label for="number">密码：</label>
+                    <input type="password" id="password" placeholder="密码" value="">
+                   <!--   --></div>
+                    <label for="day" >选择学校</label>
+                        <select name="school" id="school">
+                          <option value="北京理工大学">北京理工大学</option>
+                          <option value="重庆大学">重庆大学</option>
+                          <option value="大连理工大学">大连理工大学</option>
+                          <option value="东南大学">东南大学</option>
+                          <option value="哈尔滨工业大学">哈尔滨工业大学</option>
+                          <option value="华南理工大学">华南理工大学</option>
+                          <option value="天津大学">天津大学</option>
+                          <option value="同济大学">同济大学</option>
+                          <option value="西北工业大学">西北工业大学</option>
+                        </select>
+               
+                <div data-role="fieldcontain">
+                    <a data-role="button" data-transition="slide" id="bind_button" data-theme="b">报道</a>
+                </div>
+            </div> 
+        </div>
+        </div>
+
+    <script>
+    $(document).ready(function(){
+        $('#main').css("background-image","url(../static/images/background.jpg)");
+        $('#bind_button').on('click',function(){
+            $.mobile.loading('show',{theme:"b",text:"正在操作...",textonly:true, textVisible: true});
+            setTimeout(function(){
+                $.ajax({
+                    url:'/Tregister/{{openid}}',
+                    type:'POST',
+                    data:{
+                        'name':$('#number').val(),
+                        'password':$('#password').val(),
+                        'school':$('#school').val()
+                    },
+                    success:function(e){
+                        $.mobile.loading('hide');
+                        if(e=='success'){
+                            $('.main_content').html('<div style="margin-top:20%"><center>报道成功,请返回公众号进行相关操作</center></div>');
+                        }
+                        else{
+                            alert(e);
+                        }
+                    },
+                    erroe:function(e){
+                        $.mobile.loading('hide');
+                            alert('绑定失败,请检查网络');
+                    }
+                });
+            },50);
+            });
+        });
+    </script>
+    </body>
+</html>
