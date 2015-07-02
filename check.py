@@ -55,20 +55,12 @@ class Message(object):
     @property
     def content(self):
         content = self.msg.get('Content',None)
-        if u'选手列表' == content:
-            return 'lists'
-        elif u'投票规则' == content:
-            return 'rules'
-        elif u'投票结果' == content:
-            return 'result'
-        elif u'提问' in content:
+        if u'提问' in content:
             return 'ask'
         elif content==u'勤工助学' or content==u'资助育人活动' or content==u'其他' :
             return 'information'
-        elif u'毕业生' in content:
-            return 'vote'
-        elif u'会议安排' in content:
-            return 'party'
+        elif content == u'test':
+            return 'test'
         else:
             return 'nothing'
     @property

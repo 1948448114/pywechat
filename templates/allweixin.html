@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="{{static_url('css/jquery.mobile-1.4.2.css') }}">
+        <script type="text/javascript" src="{{static_url('js/jquery.min.js')}}"></script>
+        <script type="text/javascript" src="{{static_url('js/jquery.mobile-1.4.2.min.js') }}"></script>
+        <script type="text/javascript">
+            document.domain = "qq.com";
+        </script>
+        <title>添加微信公众平台</title>
+    </head>
+
+    <body>
+
+        <div data-role="page" id="main">
+            <div>
+                <h2 class="rich_media_title" id="activity-name" style="text-align: center;">东南大学微信公众平台</h2>
+                <div class="rich_media_thumb_wrp" id="media">
+                <img class="rich_media_thumb" id="js_cover" onerror="this.parentNode.removeChild(this)" data-s="300,640" src="../static/images/pic/south.jpg">          </div>
+               
+            </div>
+            <div data-role="content" class="main_content" id="main_content" >
+                <div data-role="fieldcontain">
+                    
+                    <p style="font-weight:bold;">选择公众号:</p>
+                        <select name="type" id="type">
+                          <option value="1">学生事务服务中心一</option>
+                          <option value="2">学生事务服务中心二</option>
+                          <option value="3">学生事务服务中心三</option>
+                          <option value="4">学生事务服务中心四</option>
+                        </select>
+            </div> 
+            <div>
+                <fieldset style="border: 0px; box-sizing: border-box; width: 100%; clear: both; margin: 0.8em 0px 0.5em; overflow: hidden; padding: 0px;" class="tn-Powered-by-XIUMI">
+                    <section style="box-sizing: border-box; width: 65%; float: left; padding: 0px 0.1em 0px 0px;" class="tn-Powered-by-XIUMI">
+                        <img id="qcode" style="box-sizing: border-box; width: 100% !important; visibility: visible !important; height: auto !important;"  data-type="jpeg" data-ratio="1.2966360856269112" data-w="327" _width="100%" src="../static/images/qcode1.jpg">
+                    </section>
+                    <section style="display: inline-block; width: 35%; box-sizing: border-box; float: left; padding: 0px 0px 0px 0.1em;" class="tn-Powered-by-XIUMI">
+                        <section style="box-sizing: border-box; margin-right: 4px; padding: 4px 6px; color: rgb(52, 54, 60); font-size: 1.2em; border-bottom-width: 1px; border-bottom-style: solid; border-color: black; font-family: inherit; font-weight: inherit; text-align: inherit; text-decoration: inherit;" class="tn-Powered-by-XIUMI">加入方法
+                        </section>
+                        <section style="box-sizing: border-box; margin-right: 0.3em; padding: 0.3em 0.5em; color: rgb(120, 124, 129); font-size: 0.9em; font-family: inherit; font-weight: inherit; text-align: inherit; text-decoration: inherit;" class="tn-Powered-by-XIUMI">长按二维码加入群哦
+                        </section>
+                    </section>
+                </fieldset>
+            </div>
+            <div>
+                <!-- <img class="rich_media_thumb" id="qcode" onerror="this.parentNode.removeChild(this)" data-s="300,640" src="../static/images/qcode1.jpg"> -->
+            </div>
+            <div data-role="footer" data-position="fixed" >
+              <h1>南京•东南大学</h1>
+              </div>
+        </div>
+        </div>
+
+    <script>
+    $(document).ready(function(){
+        // $('#main').css("background-image","url(/static/images/login_background.jpg)");
+       $('#type').change(function(){
+        var s="../static/images/pic/qcode"+$(this).val()+".jpg"
+        $('#qcode').attr("src",s);
+       })
+        })
+    </script>
+    </body>
+</html>
+
+http://weixin.qq.com/r/DUiwqELE-B_DrQbL9x0f
+ <!-- $('#bind_button').on('click',function(){
+            $.mobile.loading('show',{theme:"b",text:"正在操作...",textonly:true, textVisible: true});
+            setTimeout(function(){
+                $.ajax({
+                    url:'/wechata/Tregister/',
+                    type:'POST',
+                    data:{
+                        'name':$('#number').val(),
+                        'password':$('#password').val(),
+                        'school':$('#school').val()
+                    },
+                    success:function(e){
+                        $.mobile.loading('hide');
+                        if(e=='success'){
+                            $('.main_content').html('<div style="margin-top:20%"><center>报道成功,请返回公众号进行相关操作</center></div>');
+                        }
+                        else{
+                            alert(e);
+                        }
+                    },
+                    erroe:function(e){
+                        $.mobile.loading('hide');
+                            alert('绑定失败,请检查网络');
+                    }
+                });
+            },50);
+            }); -->
