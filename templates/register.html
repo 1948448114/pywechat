@@ -33,7 +33,7 @@
             $.mobile.loading('show',{theme:"b",text:"正在操作...",textonly:true, textVisible: true});
             setTimeout(function(){
                 $.ajax({
-                    url:'/register/{{openid}}',
+                    url:'/wechata/register/{{openid}}',
                     type:'POST',
                     data:{
                         'number':$('#number').val(),
@@ -41,16 +41,16 @@
                     },
                     success:function(e){
                         $.mobile.loading('hide');
-                        if(e=='success'){
+                        if(e =='success'){
                             $('.main_content').html('<div style="margin-top:20%"><center>绑定成功</center></div>');
                         }
                         else{
                             alert(e);
                         }
                     },
-                    erroe:function(e){
+                    error:function(e){
                         $.mobile.loading('hide');
-                            alert('绑定失败,请检查网络');
+                        alert('绑定失败,请检查网络');
                     }
                 });
             },50);

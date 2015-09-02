@@ -23,7 +23,6 @@ class registerHandler(tornado.web.RequestHandler):
         number = self.get_argument('number',default = None)
         password = self.get_argument('password',default = None)
         flag = True
-        print 'openid',openid
         if not openid:
             self.write('access failed')
             self.finish()
@@ -53,13 +52,10 @@ class registerHandler(tornado.web.RequestHandler):
                     self.write('输入了非法字符==')
                     self.finish()
                     return
-                print 'number',number
-                print 'password',password
                 # self.check(number,password)
                 status = self.check_user(data)
                 if status == 0:
                     if newUser:
-                        print 'get'
                         user = User(openid = openid,
                                     number = number,
                                     password = password,
@@ -91,14 +87,11 @@ class registerHandler(tornado.web.RequestHandler):
                 self.db.close()
     def check_user(self,data):
         client = HTTPClient()
-        request = HTTPRequest(URL+'/checkPWD',method = 'POST',
+        request = HTTPRequest(LOCAL+'/checkPWD',method = 'POST',
                               body = urllib.urlencode(data),request_timeout=7)
         try:
             response = client.fetch(request)
-            print response.body
             ret = json.loads(response.body)
-            # ret = self.check(data['number'],data['password'])
-            print ret
             if ret['code'] == 200:
                 return 0
             elif ret['code'] == 400:
@@ -110,7 +103,6 @@ class registerHandler(tornado.web.RequestHandler):
             else:
                 return 4
         except Exception,e:
-            print e
             return 4
     
       

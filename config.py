@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-LOCAL = u'http://121.248.63.115'
+LOCAL = u'http://123.57.221.18/wechata'
 URL = u'http://123.57.221.18/wechata'
 party_url = u'http://mp.weixin.qq.com/s?__biz=MzAxMzExMTAwMw==&mid=207384904&idx=1&sn=7554d729670ca80145276b6f64b50312#rd'
 com_url = u'http://mp.weixin.qq.com/s?__biz=MzAxMzExMTAwMw==&mid=207373271&idx=1&sn=6cecb9a46c550d280cb525c3521a4611#rd'

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 import hashlib
 import time
@@ -61,6 +62,12 @@ class Message(object):
             return 'information'
         elif content == u'test':
             return 'test'
+        elif content == u'j':
+            return 'jiang_list'
+        elif content == u'q':
+            return 'jiang_query'
+        elif content == u't':
+            return 'zhu_query'
         else:
             return 'nothing'
     @property

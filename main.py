@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #@date  :2015-3-22
 
@@ -6,6 +7,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from mod.register import registerHandler
 from mod.allweixin import allweixinHandler
 from mod.db import engine
+from mod.getCon import *
 from sqlalchemy.orm.exc import NoResultFound
 from mod.user import User
 import tornado.web
@@ -13,9 +15,10 @@ import tornado.ioloop
 import tornado.httpserver
 import tornado.options
 import tornado.gen
-import os
+import os, sys
 import check
 import random
+from time import localtime, strftime, time
 
 
 
@@ -54,6 +57,10 @@ class WechatHandler(tornado.web.RequestHandler):
             'nothing':self.nothing,
             'information':self.information,
             'test':self.test,
+            'jiang_list':self.jiang_list,
+            'jiang_query':self.jiang_query,
+            'zhu_query':self.zhu_query,
+            'zhu_list':self.zhu_list,
             'ask':self.ask
         }
     def on_finish(self):
@@ -77,25 +84,31 @@ class WechatHandler(tornado.web.RequestHandler):
                                    self.get_argument('nonce', default='')
                                    ):
             self.wx.parse_msg(self.request.body)
-            if self.wx.msg_type == 'event' :
-                if self.wx.event =='subscribe':
-                    self.write(self.wx.response_text_msg(ResponseContent))
+            try:
+                if self.wx.msg_type == 'event' :
+                    if self.wx.event =='subscribe':
+                        self.write(self.wx.response_text_msg(ResponseContent))
+                        self.finish()
+                    elif self.wx.event == 'unsubscribe':
+                        self.write(self.wx.response_text_msg(u'谢谢您的关注'))
+                        self.finish()
+                    elif self.wx.event == 'CLICK':
+                        try:
+                            self.unitsmap[self.wx.event_key]()
+                        except KeyError:
+                            pass
+                        self.finish()
+                elif self.wx.msg_type == 'text':
+                    self.unitsmap[self.wx.content]()
                     self.finish()
-                elif self.wx.event == 'unsubscribe':
-                    self.write(self.wx.response_text_msg(u'谢谢您的关注'))
-                    self.finish()
-                elif self.wx.event == 'CLICK':
-                    try:
-                        self.unitsmap[self.wx.event_key]()
-                    except KeyError:
-                        pass
-                    self.finish()
-            elif self.wx.msg_type == 'text':
-                self.unitsmap[self.wx.content]()
-                self.finish()
 
-            else:
-                self.write(self.wx.response_text_msg(u'??'))
+                else:
+                    self.write(self.wx.response_text_msg(u'??'))
+                    self.finish()
+            except:
+                with open('wechat_error.log','a+') as f:
+                    f.write(strftime('%Y%m%d %H:%M:%S in [wechat]', localtime(time()))+'\n'+str(sys.exc_info()[0])+str(sys.exc_info()[1])+'\n\n')
+                self.write(self.wx.response_text_msg(u'出了点问题T_T,稍后再试吧~'))
                 self.finish()
         else:
             self.write('message processing fail')
@@ -114,6 +127,38 @@ class WechatHandler(tornado.web.RequestHandler):
     def test(self):
         msg = u'<a href="%s/allweixin">test</a>' %URL
         self.write(self.wx.response_text_msg(msg))
+    def jiang_list(self):
+        try:
+            user = self.db.query(User).filter(User.openid == self.wx.openid).one()
+            msg = jiang_list(user)
+            self.write(self.wx.response_text_msg(msg))
+        except NoResultFound:
+            msg = u'<a href="%s/register/%s">您尚未进行绑定，点我进行绑定哦</a>' % (LOCAL, self.wx.openid)
+            self.write(self.wx.response_text_msg(msg))
+    def jiang_query(self):
+        try:
+            user = self.db.query(User).filter(User.openid == self.wx.openid).one()
+            msg = jiang_query(user)
+            self.write(self.wx.response_text_msg(msg))
+        except NoResultFound:
+            msg = u'<a href="%s/register/%s">您尚未进行绑定，点我进行绑定哦</a>' % (LOCAL, self.wx.openid)
+            self.write(self.wx.response_text_msg(msg))
+    def zhu_query(self):
+        try:
+            user = self.db.query(User).filter(User.openid == self.wx.openid).one()
+            msg = zhu_query(user)
+            self.write(self.wx.response_text_msg(msg))
+        except NoResultFound:
+            msg = u'<a href="%s/register/%s">您尚未进行绑定，点我进行绑定哦</a>' % (LOCAL, self.wx.openid)
+            self.write(self.wx.response_text_msg(msg))
+    def zhu_list(self):
+        try:
+            user = self.db.query(User).filter(User.openid == self.wx.openid).one()
+            msg = zhu_list(user)
+            self.write(self.wx.response_text_msg(msg))
+        except NoResultFound:
+            msg = u'<a href="%s/register/%s">您尚未进行绑定，点我进行绑定哦</a>' % (LOCAL, self.wx.openid)
+            self.write(self.wx.response_text_msg(msg))
 
     # def change_pwd(self):
     #     try:
