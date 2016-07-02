@@ -2,7 +2,7 @@
 # LOCAL = u'http://123.57.221.18'
 
 from tornado.httpclient import HTTPRequest, HTTPClient, HTTPError
-from user import User
+from model.user import User
 from get_api_return import get_api_return
 
 def jiang_list(user):
@@ -23,27 +23,21 @@ def jiang_list(user):
         return u"正在获取最新数据，再点一次就有啦！"
     else:
         return ret['content']
+# 已获得奖学金
 def jiang_query(user):
     ret = get_api_return('jiang_query',user)
     msg = u''
     if ret['code'] == 200:
-        content_get = ret['content_get']
+        content = ret['content']
         content_apply = ret['content_apply']
-        msg += u'正在申请奖学金:\n'
-        for item in content_apply:
-            msg += u'>  %s\n' % item['name']
-            msg += u'申请日期:%s\n' % item['apply_time']
-            msg += u'状态:%s\n' % item['state']
-        if not content_get:
-            msg += u'没有申请奖学金T_T\n'
-        msg += u'\n'
-        msg += u'已获得奖学金:\n'
-        for item in content_get:
+        msg += u'已申请奖学金:\n'
+        for item in content:
             msg += u'>  %s\n' % item['name']
             msg += u'学期:%s\n' % item['term']
-            msg += u'金额:%s\n' % item['money']
-        if not content_get:
-            msg += u'没有获得奖学金T_T\n'
+            mag += u'金额:%s\n' % item['money']
+            msg += u'状态:%s\n' % item['state']
+        if not content:
+            msg += u'没有申请奖学金T_T\n'
         return msg
     elif ret['code'] == 599:
         return u"正在获取最新数据，再点一次就有啦！"

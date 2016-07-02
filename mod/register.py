@@ -4,7 +4,7 @@ import tornado.web
 import tornado.gen
 import urllib, re
 import json
-from user import User
+from model.user import User
 from config import *
 
 class registerHandler(tornado.web.RequestHandler):

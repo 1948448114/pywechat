@@ -6,10 +6,13 @@ from config import *
 from sqlalchemy.orm import scoped_session, sessionmaker
 from mod.register import registerHandler
 from mod.allweixin import allweixinHandler
-from mod.db import engine
+from mod.model.db import engine
 from mod.getCon import *
 from sqlalchemy.orm.exc import NoResultFound
-from mod.user import User
+from mod.model.user import User
+from mod.model.wekeyword import WeKeyWord
+
+from mod.keyword import keywordHandler
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
@@ -19,6 +22,7 @@ import os, sys
 import check
 import random
 from time import localtime, strftime, time
+import traceback
 
 
 
@@ -32,12 +36,12 @@ class Application(tornado.web.Application):
             (r'/wechata/',WechatHandler),
             (r'/wechata/register/([\S]+)',registerHandler),
             (r'/wechata/allweixin',allweixinHandler),
+            (r'/wechata/keyword',keywordHandler)
             ]
         settings = dict(
             cookie_secret="7CA71A57B571B5AEAC5E64C6042415DE",
             template_path=os.path.join(os.path.dirname(__file__), 'templates'),
             static_path=os.path.join(os.path.dirname(__file__), 'static'),
-            # static_url_prefix = os.path.join(os.path.dirname(__file__), '/images/'),
             debug=True
         )
         tornado.web.Application.__init__(self, handlers, **settings)
@@ -56,7 +60,6 @@ class WechatHandler(tornado.web.RequestHandler):
         return {
             'nothing':self.nothing,
             'information':self.information,
-            'test':self.test,
             'jiang_list':self.jiang_list,
             'jiang_query':self.jiang_query,
             'zhu_query':self.zhu_query,
@@ -99,9 +102,19 @@ class WechatHandler(tornado.web.RequestHandler):
                             pass
                         self.finish()
                 elif self.wx.msg_type == 'text':
-                    self.unitsmap[self.wx.content]()
+                    key = self.wx.content_key(self.wx.content)
+                    if key == 'nothing':
+                        self.nothing(self.wx.content)
+                    else:
+                        self.unitsmap[key]()
                     self.finish()
-
+                elif self.wx.msg_type == 'voice':
+                    key = self.wx.content_key(self.wx.voice_content)
+                    if key == 'nothing':
+                        self.nothing(self.wx.self.wx.voice_content)
+                    else:
+                        self.unitsmap[key]()
+                    self.finish()
                 else:
                     self.write(self.wx.response_text_msg(u'??'))
                     self.finish()
@@ -114,18 +127,21 @@ class WechatHandler(tornado.web.RequestHandler):
             self.write('message processing fail')
             self.finish()
     
-    def nothing(self):
-        # msg = u'您好! 您可以直接回复“提问+您的问题”我们将为您解答，答疑时间为周一至周五09：00-17：00. 东南大学学生事务服务中心联系方式：025-52090282，九龙湖校区大活524。'
-        msg = u' '
-        # self.write(self.wx.response_text_msg(msg))
+    def nothing(self,content):
+        msg = u'您好! 您可以直接回复“提问+您的问题”我们将为您解答，答疑时间为周一至周五09：00-17：00. 东南大学学生事务服务中心联系方式：025-52090282，九龙湖校区大活524。'
+        try:
+            keyword = self.db.query(WeKeyWord).all()
+            for i in keyword:
+                if content in i.keyword:
+                    msg = i.response
+        except:
+            pass
+        self.write(self.wx.response_text_msg(msg))
     def information(self):
         msg = ResponseContent
         self.write(self.wx.response_text_msg(msg))
     def ask(self):
         msg = u'感谢您的提问！工作人员会及时回答您的提问，请耐心等待。'
-        self.write(self.wx.response_text_msg(msg))
-    def test(self):
-        msg = u'<a href="%s/allweixin">test</a>' %URL
         self.write(self.wx.response_text_msg(msg))
     def jiang_list(self):
         try:
@@ -159,56 +175,6 @@ class WechatHandler(tornado.web.RequestHandler):
         except NoResultFound:
             msg = u'<a href="%s/register/%s">您尚未进行绑定，点我进行绑定哦</a>' % (LOCAL, self.wx.openid)
             self.write(self.wx.response_text_msg(msg))
-
-    # def change_pwd(self):
-    #     try:
-    #         teacher = self.db.query(Teacher).filter(Teacher.openid == self.wx.openid).one()
-    #         msg = u'尊敬的%s,您好！<a href="%s/update/%s">点击修改密码</a>' %(teacher.name,URL,self.wx.openid)
-    #         self.write(self.wx.response_text_msg(msg))
-    #     except NoResultFound:
-    #         msg = u'<a href="%s/Tregister/%s">您尚未进行登录注册，点我进行注册登录哦</a>' % (URL, self.wx.openid)
-    #         self.write(self.wx.response_text_msg(msg))
-    # def delete(self):
-    #     try:
-    #         teacher = self.db.query(Teacher).filter(Teacher.openid == self.wx.openid).one()
-    #         teacher.openid = None
-    #         msg = u'尊敬的%s,您好！注销成功' % teacher.name
-    #         self.write(self.wx.response_text_msg(msg))
-    #     except NoResultFound:
-    #         msg = u'<a href="%s/Tregister/%s">您尚未进行登录注册，点我进行注册登录哦</a>' % (URL, self.wx.openid)
-    #         self.write(self.wx.response_text_msg(msg))
-    # def register_infor(self):
-    #     try:
-    #         teacher = self.db.query(Teacher).filter(Teacher.openid == self.wx.openid).one()
-    #         msg = u'尊敬的%s，您好！您的房间号为:%s' % (teacher.name,teacher.room)
-    #         self.write(self.wx.response_text_msg(msg))
-    #     except NoResultFound:
-    #         msg = u'<a href="%s/Tregister/%s">您尚未进行登录注册，点我进行注册登录哦</a>' % (URL, self.wx.openid)
-    #         self.write(self.wx.response_text_msg(msg))
-    # def party_arrangement(self):
-    #     try:
-    #         teacher = self.db.query(Teacher).filter(Teacher.openid == self.wx.openid).one()
-    #         msg = u'尊敬的%s，您好！<a href="%s">点击查看详细会议安排</a>' % (teacher.name,party_url)
-    #         self.write(self.wx.response_text_msg(msg))
-    #     except NoResultFound:
-    #         msg = u'<a href="%s/Tregister/%s">您尚未进行登录注册，点我进行注册登录哦</a>' % (URL, self.wx.openid)
-    #         self.write(self.wx.response_text_msg(msg))
-    # def download(self):
-    #     try:
-    #         teacher = self.db.query(Teacher).filter(Teacher.openid == self.wx.openid).one()
-    #         msg = u'尊敬的%s，您好，<a href="%s/fileList">请点击下载资料</a>' % (teacher.name,URL)
-    #         self.write(self.wx.response_text_msg(msg))
-    #     except NoResultFound:
-    #         msg = u'<a href="%s/Tregister/%s">您尚未进行登录注册，点我进行注册登录哦</a>' % (URL, self.wx.openid)
-    #         self.write(self.wx.response_text_msg(msg))
-    # def communicate(self):
-    #     try:
-    #         teacher = self.db.query(Teacher).filter(Teacher.openid == self.wx.openid).one()
-    #         msg = u'尊敬的%s，您好，<a href="%s">请点击加入交流群</a>' % (teacher.name,com_url)
-    #         self.write(self.wx.response_text_msg(msg))
-    #     except NoResultFound:
-    #         msg = u'<a href="%s/Tregister/%s">您尚未进行登录注册，点我进行注册登录哦</a>' % (URL, self.wx.openid)
-    #         self.write(self.wx.response_text_msg(msg))
     
 
 

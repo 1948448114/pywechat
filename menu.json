@@ -176,3 +176,27 @@ http://123.57.221.18/ranking
             }]
        }]
  }
+
+
+
+
+
+ {
+  "button":[
+    {
+    "type":"click",
+    "name":"FitGo平台",
+    "key":"index"
+    },
+    {
+    "type":"click",
+    "name":"信息反馈",
+    "key":"index1"
+    },
+    {
+    "type":"click",
+    "name":"关于我们",
+    "key":"index1"
+    }
+  ]
+ }
