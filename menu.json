@@ -9,9 +9,14 @@
                "url":"http://xb.seu.edu.cn/f3/d7/c6343a62423/page.htm"
             },
             {
-                "type":"view",
-                "name":"退宿办理",
-                "url":"http://xb.seu.edu.cn/f4/5a/c6358a62554/page.htm"
+               "type":"click",
+               "name":"休、退、复、转",
+               "key":"information"
+            },
+             {
+               "type":"view",
+               "name":"绿色通道",
+               "url":"http://mp.weixin.qq.com/s?__biz=MzAxMzExMTAwMw==&mid=210557150&idx=1&sn=eda60a19c8ed359138973a1a626904eb#rd"
             },
             {
                "type":"click",
@@ -25,7 +30,6 @@
             }
             ]
        },
-       
        {
            "name":"资助管理",
            "sub_button":[
@@ -46,43 +50,19 @@
             },
             {
                "type":"click",
-               "name":"勤工助学",
+               "name":"助学金",
                "key":"zhu_list"
             },
             {
                 "type":"click",
-                "name":"我的勤工助学",
+                "name":"我的助学金",
                 "key":"zhu_query"
             }]
        },
        {
-           "name":"新生资助",
-           "sub_button":[
-            {
-               "type":"view",
-               "name":"绿色通道",
-               "url":"http://mp.weixin.qq.com/s?__biz=MzAxMzExMTAwMw==&mid=210557150&idx=1&sn=eda60a19c8ed359138973a1a626904eb#rd"
-            },
-            {
-                "type":"view",
-                "name":"励志典型",
-                "url":"http://mp.weixin.qq.com/s?__biz=MzAxMzExMTAwMw==&mid=210654144&idx=1&sn=7d1bf0581fdce61c17bb0fe129d12337#rd"
-            },
-            {
-                "type":"view",
-                "name":"资助政策",
-                "url":"http://mp.weixin.qq.com/s?__biz=MzAxMzExMTAwMw==&mid=210654021&idx=1&sn=7bab885ee5549e150aa692ff2efd2fac#rd"
-            },
-            {
-               "type":"view",
-               "name":"学生社团",
-               "url":"http://mp.weixin.qq.com/s?__biz=MzAxMzExMTAwMw==&mid=210616388&idx=1&sn=bed1e721f3664a33dc4ea2cf3fdc16b0#rd"
-            },
-            {
-                "type":"click",
-                "name":"其他",
-                "key":"information"
-            }]
+           "name":"一卡通充值",
+           "type":"view",
+           "url":"http://58.192.115.47:8088/wechat-web/login/initlogin.html"
        }]
  }
 http://123.57.221.18/mobile_intro
@@ -103,11 +83,6 @@ http://123.57.221.18/ranking
                 "type":"view",
                 "name":"退宿办理",
                 "url":"http://xb.seu.edu.cn/f4/5a/c6358a62554/page.htm"
-            },
-            {
-               "type":"click",
-               "name":"休、退、复、转",
-               "key":"information"
             },
             {
                 "type":"click",
@@ -149,11 +124,6 @@ http://123.57.221.18/ranking
        {
            "name":"新生资助",
            "sub_button":[
-            {
-               "type":"view",
-               "name":"绿色通道",
-               "url":"http://mp.weixin.qq.com/s?__biz=MzAxMzExMTAwMw==&mid=210557150&idx=1&sn=eda60a19c8ed359138973a1a626904eb#rd"
-            },
             {
                 "type":"view",
                 "name":"励志典型",
