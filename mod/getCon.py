@@ -29,12 +29,12 @@ def jiang_query(user):
     msg = u''
     if ret['code'] == 200:
         content = ret['content']
-        content_apply = ret['content_apply']
+        content_apply = ret['content']
         msg += u'已申请奖学金:\n'
         for item in content:
             msg += u'>  %s\n' % item['name']
             msg += u'学期:%s\n' % item['term']
-            mag += u'金额:%s\n' % item['money']
+            msg += u'金额:%s\n' % item['money']
             msg += u'状态:%s\n' % item['state']
         if not content:
             msg += u'没有申请奖学金T_T\n'

@@ -6,10 +6,10 @@ from config import *
 from sqlalchemy.orm import scoped_session, sessionmaker
 from mod.register import registerHandler
 from mod.allweixin import allweixinHandler
-from mod.db import engine
+from mod.model.db import engine
 from mod.getCon import *
 from sqlalchemy.orm.exc import NoResultFound
-from mod.user import User
+from mod.model.user import User
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
