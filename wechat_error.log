@@ -1,0 +1,12 @@
+20160912 19:31:59 in [wechat]
+<type 'exceptions.KeyError'>'content_apply'
+
+20160912 19:32:05 in [wechat]
+<type 'exceptions.KeyError'>'content_apply'
+
+20160912 19:35:30 in [wechat]
+<type 'exceptions.KeyError'>'content_apply'
+
+20160912 19:41:51 in [wechat]
+<type 'exceptions.UnboundLocalError'>local variable 'mag' referenced before assignment
+
